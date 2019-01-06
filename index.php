@@ -3,7 +3,7 @@
 /**
  * GitHub requires an OAuth 2 token to give access to their api.
  */
-$github_api_token = "";
+$github_api_token = ""; // EDIT
 
 /**
  * The query argument holding the short commit sha (the first 7 letters).
