@@ -5,15 +5,28 @@
  */
 $github_api_token = ""; // EDIT
 
+if (!isset($_GET["revision"]) {
+    http_response_code(400);
+    exit("No revision sha provided");
+}
+
 /**
  * The query argument holding the short commit sha (the first 7 letters).
  */
 $revision = $_GET["revision"];
 
 /**
+*  The repository that we are working with, defaults to FastASyncWorldEdit-1.13
+*/
+$repository = "FastAsyncWorldEdit-1.13";
+if (isset($_GET["repository"]) {
+    $repository = $_GET["repository"];   
+}
+    
+/**
  * The base URL for our compare requests.
  */
-$compareUrl = "https://api.github.com/repos/IntellectualSites/FastAsyncWorldEdit-1.13/compare/$revision...master";
+$compareUrl = "https://api.github.com/repos/IntellectualSites/$repository/compare/$revision...master";
 
 $curl = curl_init();
 
@@ -28,7 +41,7 @@ curl_setopt_array($curl, array(
     CURLOPT_HTTPHEADER => array(
         "cache-control: no-cache",
         "Authorization: Bearer $github_api_token",
-        "User-Agent:  FastAsyncWorldEdit"
+        "User-Agent:  $repository
   ),
 ));
 
@@ -38,7 +51,7 @@ $err = curl_error($curl);
 curl_close($curl);
 
 if ($err) {
-    echo "Please report this issue to a FAWE dev. cUrl error #:" . $err;
+    exit("Please report this issue to an IntellectualSites developer. cUrl error #:" . $err);
 } else {
     $json = json_decode($response, true);
     
